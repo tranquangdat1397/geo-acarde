@@ -43,8 +43,7 @@ public class GameWindow extends JFrame{
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                gameCanvas.players.x=e.getX();
-                gameCanvas.players.y=e.getY();
+                gameCanvas.positionPlayer.set(e.getX(),e.getY());
             }
         });
 

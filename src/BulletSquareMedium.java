@@ -5,28 +5,26 @@ import java.io.File;
 import java.io.IOException;
 
 public class BulletSquareMedium {
-    public int x;
-    public int y;
+    public Vector2D position;
     public BufferedImage image;
-    public int speed;
+    public Vector2D velocity;
 
-    public BulletSquareMedium(int x, int y, String url, int speed){
-        this.x = x;
-        this.y = y;
+    public BulletSquareMedium(Vector2D position, String url, Vector2D velocity){
+        this.position=position;
         try {
             this.image = ImageIO.read(new File(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.speed = speed;
+        this.velocity = velocity;
 
     }
 
     public void run() {
-        this.y+=this.speed;
+        this.position.addUp(this.velocity);
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(this.image, this.x, this.y,null);
+        graphics.drawImage(this.image, (int)this.position.x, (int)this.position.y,null);
     }
 }

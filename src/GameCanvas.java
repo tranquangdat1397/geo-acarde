@@ -1,25 +1,23 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Random;
 import java.util.Vector;
 
 public class GameCanvas extends JPanel {
 
-    BufferedImage backGround;
+//    BufferedImage backGround;
     BufferedImage backBuffered;
     Graphics graphics;
     Vector<BulletPlayers> bulletVector;
     Vector<SquareEnemy> squareVector;
     Vector<BulletSquareMedium> squareMediumBulletVector;
 
-    SquareEnemy squareMediumEnemy;
-    Players players;
+    public Vector2D positionPlayer = new Vector2D();
 
-    int count =0;
+    SquareEnemy squareMediumEnemy;
+//    BulletPlayers bulletPlayers;
+    Players players;
+    BackGround backGround;
 
     public GameCanvas(){
         this.setSize(400, 600);
@@ -37,20 +35,7 @@ public class GameCanvas extends JPanel {
     }
 
     public void renderAll(){
-        this.graphics.drawImage(this.backGround,0,0,null);
-        players.render(this.graphics);
-        squareMediumEnemy.render(this.graphics);
-       for(SquareEnemy squareEnemy: this.squareVector){
-           squareEnemy.render(this.graphics);
-       }
-
-        for (BulletSquareMedium bulletsquareMedium: squareMediumBulletVector) {
-            bulletsquareMedium.render(this.graphics);
-        }
-
-        for(BulletPlayers bulletPlayers: this.bulletVector){
-            bulletPlayers.render(this.graphics);
-        }
+        GameObject.renderAll(graphics);
 
         this.repaint();
     }
@@ -63,59 +48,55 @@ public class GameCanvas extends JPanel {
 
     public void setupBackground(){
 
-        try {
-            this.backGround = ImageIO.read(new File("asset-geoarcade-master/resources/background/background.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.backGround = new BackGround();
+        GameObject.add(backGround);
     }
 
     public void setupPlayer(){
-
-        this.players = new Players(0,0,"asset-geoarcade-master/resources/player/straight.png");
-        this.bulletVector = new Vector<>();
+        this.players = new Players();
+        GameObject.add(players);
+//        this.players = new Players(new Vector2D(),"asset-geoarcade-master/resources/player/straight.png");
     }
     public void setupEnemy(){
-        squareMediumEnemy = new SquareEnemy(50,0,"asset-geoarcade-master/resources/square/enemy_square_medium.png",1);
-        this.squareMediumBulletVector = new Vector<>();
-        this.squareVector = new Vector<>();
+        GameObject.add(new NumberOfSquare());
     }
     public void runAll(){
-//        if(this.bulletPositionX<=0) speedX = Math.abs(speedX);
-//        if(this.bulletPositionX>=360) speedX = -speedX;
-//        if(this.bulletPositionY<=0) speedX = Math.abs(speedY);
-//        if(this.bulletPositionY>=580) speedY = -speedY;
-//        this.bulletPositionX += speedX;
-//        this.bulletPositionY += speedY;
 
-        if(this.count>=30) {
-            BulletPlayers bulletPlayers = new BulletPlayers(players.x,players.y-50, "asset-geoarcade-master/resources/player/player_bullet_explosion.png",5);
-            BulletPlayers bulletPlayers1 = new BulletPlayers(players.x-20,players.y-50,"asset-geoarcade-master/resources/player/player_bullet_explosion.png",5);
-            this.bulletVector.add(bulletPlayers);
-            this.bulletVector.add(bulletPlayers1);
-            this.count = 0;
+        this.players.position.set(this.positionPlayer);
+        GameObject.runAll();
 
-            Random random = new Random();
-            int randomSquare = random.nextInt(500);
-            SquareEnemy squareEnemy = new SquareEnemy(randomSquare,0,"asset-geoarcade-master/resources/square/enemy_square_small.png",3);
-            this.squareVector.add(squareEnemy);
+//        if(this.count>=30) {
+//            BulletPlayers bulletPlayers = new BulletPlayers(this.positionPlayer.clone(), "asset-geoarcade-master/resources/player/player_bullet_explosion.png",new Vector2D(0,3));
+//            BulletPlayers bulletPlayers1 = new BulletPlayers(players.x-20,players.y-50,"asset-geoarcade-master/resources/player/player_bullet_explosion.png",5);
+//            BulletPlayers bulletPlayers = new BulletPlayers();
+//            bulletPlayers.position1.set(this.positionPlayer);
+//            bulletPlayers.velocity.set(0.0f,3.0f);
+//            this.bulletVector.add(bulletPlayers);
+//            this.bulletPlayers.run();
+//            this.count = 0;
 
-            BulletSquareMedium bulletSquareMediumquareMedium = new BulletSquareMedium(squareMediumEnemy.x+10,squareMediumEnemy.y,"asset-geoarcade-master/resources/square/enemy_square_bullet.png",5);
-            this.squareMediumBulletVector.add(bulletSquareMediumquareMedium);
-        } else {
-            this.count += 2;
-        }
+//            Random random = new Random();
+//            int randomSquare = random.nextInt(500);
+//            SquareEnemy squareEnemy = new SquareEnemy(new Vector2D(randomSquare, this.positionSquareEnemyY),"asset-geoarcade-master/resources/square/enemy_square_small.png",new Vector2D(0,3));
+//            this.squareVector.add(squareEnemy);
 
-        for (BulletSquareMedium bulletSquareMedium: this.squareMediumBulletVector) {
-            bulletSquareMedium.run();
-        }
-        for(BulletPlayers bulletPlayers: this.bulletVector){
-            bulletPlayers.run();
-        }
+//            BulletSquareMedium bulletSquareMedium = new BulletSquareMedium(squareMediumEnemy.x+10,squareMediumEnemy.y,"asset-geoarcade-master/resources/square/enemy_square_bullet.png",5);
+//            BulletSquareMedium bulletSquareMedium = new BulletSquareMedium(new Vector2D(this.positionSquareEnemyX,this.positionSquareEnemyY),"asset-geoarcade-master/resources/square/enemy_square_bullet.png",new Vector2D(0,3));
+//            this.squareMediumBulletVector.add(bulletSquareMedium);
+//        } else {
+//            this.count += 2;
+//        }
 
-        for (SquareEnemy squareEnemy: squareVector){
-            squareEnemy.run();
-        }
-        squareMediumEnemy.run();
+//        for (BulletSquareMedium bulletSquareMedium: this.squareMediumBulletVector) {
+//            bulletSquareMedium.run();
+//        }
+//        for(BulletPlayers bulletPlayers: this.bulletVector){
+//            bulletPlayers.run();
+//        }
+
+//        for (SquareEnemy squareEnemy: squareVector){
+//            squareEnemy.run();
+//        }
+//        squareMediumEnemy.run();
     }
 }

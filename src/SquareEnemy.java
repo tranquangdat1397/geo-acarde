@@ -1,29 +1,26 @@
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+public class SquareEnemy extends GameObject{
+    public Vector2D velocity;
+    private int count=0;
 
-public class SquareEnemy {
-    public int x;
-    public int y;
-    public int speed;
-    public BufferedImage image;
+    public SquareEnemy() {
+        this.image = Utils.loadImage("asset-geoarcade-master/resources/square/enemy_square_small.png");
+        this.velocity=new Vector2D();
+    }
 
-    public SquareEnemy(int x, int y, String url, int speed) {
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        try {
-            this.image = ImageIO.read(new File(url));
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public void run() {
+        super.run();
+        this.position.addUp(this.velocity);
+
+        if(count==30){
+            BulletSquare bulletSquare = new BulletSquare();
+            bulletSquare.position.set(this.position);
+            bulletSquare.velocity.set(new Vector2D(0.0f,7.0f));
+            GameObject.add(bulletSquare);
+            this.count=0;
         }
-    }
-    public void run(){
-        this.y+=speed;
-    }
-    public void render(Graphics graphics){
-        graphics.drawImage(this.image,this.x,this.y,null);
+        else {
+            count+=1;
+        }
     }
 }

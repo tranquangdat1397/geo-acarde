@@ -4,21 +4,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Players {
-    public int x;
-    public int y;
-    public BufferedImage image;
+public class Players extends GameObject{
+    public Vector2D velocity;
+    private int count=0;
 
-    public Players(int x, int y, String url) {
-        this.x = x;
-        this.y = y;
-        try {
-            this.image = ImageIO.read(new File(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Players() {
+        this.image = Utils.loadImage("asset-geoarcade-master/resources/player/straight.png");
+        this.velocity = new Vector2D();
     }
-    public void render(Graphics graphics){
-        graphics.drawImage(this.image,this.x-25,this.y-50,null);
+
+    @Override
+    public void run() {
+        super.run();
+        if(this.count==15) {
+            BulletPlayers bulletPlayers = new BulletPlayers();
+            bulletPlayers.position.set(this.position);
+            bulletPlayers.velocity.set(new Vector2D(0.0f,5.0f)) ;
+            GameObject.add(bulletPlayers);
+            this.count=0;
+        }
+        else {
+            count+=1;
+        }
     }
 }

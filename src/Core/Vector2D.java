@@ -1,4 +1,4 @@
-import com.sun.xml.internal.bind.v2.TODO;
+package Core;
 
 public class Vector2D {
     public float x;
@@ -78,9 +78,10 @@ public class Vector2D {
         return new Vector2D((float) (this.x / length(this.x, this.y)), (float) (this.y / length(this.x, this.y)));
     }
 
-    public Vector2D rotate(float a){
-        return new Vector2D(this.x * (float) Math.cos(Math.toRadians(a)) - this.y * (float) Math.sin(Math.toRadians(a)),
-                this.x * (float) Math.sin(Math.toRadians(a)) + this.y * (float) Math.cos(Math.toRadians(a)));
+    public Vector2D rotate(double angle){
+        double cos = Math.cos(Math.toRadians(angle));
+        double sin = Math.sin(Math.toRadians(angle));
+        return new Vector2D((float)(this.x*cos-this.y*sin),(float)(this.x*sin-this.y*cos));
     }
 
 }

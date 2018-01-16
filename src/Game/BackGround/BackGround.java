@@ -1,6 +1,11 @@
+package Game.BackGround;
+
+import Core.GameObject;
+import Utils.Utils;
+
 import java.awt.*;
 
-public class BackGround extends GameObject{
+public class BackGround extends GameObject {
 
     public BackGround(){
         this.image = Utils.loadImage("asset-geoarcade-master/resources/background/background.png");

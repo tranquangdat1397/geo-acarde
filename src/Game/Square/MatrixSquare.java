@@ -18,25 +18,22 @@ public class MatrixSquare extends GameObject{
             {" ", " ", " ", "A"},
     };
     float vX=3.0f;
-    float y=0;
-    boolean godown;
 
     public MatrixSquare() {
         squareEnemies = new Vector<>();
         this.velocity = new Vector2D(vX,0.0f);
         frameCounter = new FrameCounter(10);
 
-        for(int width=0; width<matrixSquare.length; width++){
-            for(int height=0; height<matrixSquare.length; height++){
-                if(matrixSquare[width][height].equalsIgnoreCase("A")){
+        for(int width=0; width<matrixSquare.length; width++) {
+            for (int height = 0; height < matrixSquare.length; height++) {
+                if (matrixSquare[width][height].equalsIgnoreCase("A")) {
                     SquareEnemy squareEnemy = new SquareEnemy();
-                    squareEnemy.position.set(width*40+10,height*40+10.0f);
+                    squareEnemy.position.set(width * 40 + 10, height * 40 + 10.0f);
                     squareEnemies.add(squareEnemy);
                     GameObject.add(squareEnemy);
                 }
             }
         }
-        this.godown=false;
     }
 
     @Override
